@@ -6,13 +6,12 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from collections import Counter
 
-# ---------- config ----------
 INDEX_PATH = "models/evidence_faiss.index"
 META_PATH = "evidence_chunks.parquet"
 EMB_MODEL = "all-MiniLM-L6-v2"
 VERIFIER_DIR = "models/verifier_crossencoder"
 
-# thresholds to map regression score to discrete label
+# thresholds to map regression score to its corresponding label
 def score_to_label(score, t_refute=-0.25, t_support=0.25):
     if score <= t_refute:
         return "refutes"
@@ -20,7 +19,7 @@ def score_to_label(score, t_refute=-0.25, t_support=0.25):
         return "supports"
     return "uncertain"
 
-# simple softmax helper for weight normalization
+# weight normalization
 def softmax(x):
     x = np.array(x, dtype=float)
     x = x - np.max(x)

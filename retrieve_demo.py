@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 
 INDEX_PATH = "models/evidence_faiss.index"
 META_PATH = "evidence_chunks.parquet"
-MODEL_NAME = "all-MiniLM-L6-v2"  # must match embedding style (dimension), ideally same model used earlier
+MODEL_NAME = "all-MiniLM-L6-v2" 
 DEFAULT_K = 5
 
 def parse_args():
@@ -62,13 +62,13 @@ def main():
         rerank_scores = cross.predict(pairs)
         for r, s in zip(results, rerank_scores):
             r["rerank_score"] = float(s)
-        # sort by rerank_score instead of orig_score
+        # sorting by rerank_score instead of orig_score
         results = sorted(results, key=lambda r: r["rerank_score"], reverse=True)
     else:
-        # sort by original FAISS score
+        # sorting by original FAISS score
         results = sorted(results, key=lambda r: r["orig_score"], reverse=True)
 
-    # print top results
+    # printing top results
     print("\nTop results:")
     for rank, r in enumerate(results, start=1):
         print(f"\n#{rank} idx={r['idx']}  orig_score={r['orig_score']:.4f}  rerank_score={r.get('rerank_score', None)}")
